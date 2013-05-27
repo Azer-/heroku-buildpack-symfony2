@@ -416,9 +416,9 @@ for var in \`env | cut -f1 -d=\`; do
 	echo "env[\$var] = \\$\${var}" >> /app/${PHP_PATH}/etc/php-fpm.conf
 done
 
-touch /app/vendor/nginx/logs/access.log /app/vendor/nginx/logs/error.log /app/${PHP_PATH}/var/log/php-fpm.log /app/${PHP_PATH}/var/log/php-errors.log /app/local/var/log/newrelic/newrelic-daemon.log /app/local/var/log/newrelic/php_agent.log
+touch /app/vendor/nginx/logs/access.log /app/vendor/nginx/logs/error.log /app/${PHP_PATH}/var/log/php-fpm.log /app/${PHP_PATH}/var/log/php-errors.log /app/local/var/log/newrelic/newrelic-daemon.log /app/local/var/log/newrelic/php_agent.log /app/app/logs/prod.log
 mkdir -p client_body_temp fastcgi_temp proxy_temp scgi_temp uwsgi_temp
-(tail -f -n 0 /app/vendor/nginx/logs/*.log /app/${PHP_PATH}/var/log/*.log /app/local/var/log/newrelic/*.log &)
+(tail -f -n 0 /app/vendor/nginx/logs/*.log /app/${PHP_PATH}/var/log/*.log /app/local/var/log/newrelic/*.log /app/app/logs/prod.log &)
 
 
 if [ "\${NEW_RELIC_LICENSE_KEY}" -a ! -f /app/local/NEWRELIC_VERSION ]; then
