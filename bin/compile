@@ -295,7 +295,6 @@ pushd ${BUILD_DIR} > /dev/null
     echo "-------> Running: app/console cache:warmup --env=${SF_ENV}"
     ${EXEC_PHP} -d memory_limit=200M app/console cache:warmup --env=${SF_ENV}
 
-
     #echo "-------> Stripping cache dir"
     #echo "s/`strip_slashes $BUILD_DIR`/\/app\//g" > cache_strip.sed
     #find app/cache/ -type f -print0 | xargs -0 sed -i -f cache_strip.sed --quiet
@@ -427,9 +426,9 @@ fi
 
 echo "Warming up Cache..."
 
-rm -rf app/cache/*
-php app/console assets:install --symlink -e prod
-php app/console cache:clear -e prod
+# rm -rf app/cache/*
+# php app/console assets:install --symlink -e prod
+# php app/console cache:clear -e prod
 
 /app/${PHP_PATH}/sbin/php-fpm
 /app/vendor/nginx/sbin/nginx
