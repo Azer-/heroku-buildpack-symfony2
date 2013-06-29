@@ -427,7 +427,7 @@ fi
 echo "Warming up Cache..."
 
 rm -rf app/cache/*
-# php app/console assets:install --symlink -e prod
+php app/console assets:install -e prod
 php app/console cache:clear -e prod
 
 /app/${PHP_PATH}/sbin/php-fpm
