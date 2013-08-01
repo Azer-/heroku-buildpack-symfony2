@@ -1,41 +1,52 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
+
+if [ "$1" != "" ]; then
+	NODE_VERSION="$1"
+fi
+
 if [ "$NODE_VERSION" == "" ]; then
-  echo "must set NODE_VERSION, i.e NODE_VERSION=0.6.18"
+  echo "usage: $0 VERSION"
   exit 1
 fi
-node_version=$NODE_VERSION
+
+# if [ "$AWS_ID" == "" ]; then
+#   echo "must set AWS_ID"
+#   exit 1
+# fi
+
+# if [ "$AWS_SECRET" == "" ]; then
+#   echo "must set AWS_SECRET"
+#   exit 1
+# fi
+
+# if [ "$S3_BUCKET" == "" ]; then
+#   echo "must set S3_BUCKET"
+#   exit 1
+# fi
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
 # make a temp directory
 tempdir="$( mktemp -t node_XXXX )"
-
-echo "Temp Dir : $tempdir"
-
 rm -rf $tempdir
 mkdir -p $tempdir
-pushd $tempdir
-
-echo "Download Node ${node_version}..."
-curl -sL http://nodejs.org/dist/v${node_version}/node-v${node_version}.tar.gz -o node.tar.gz
-
-echo "Extract Node ${node_version}..."
-tar xzf node.tar.gz
-
-pushd node-v${node_version}
+cd $tempdir
 
 # build and package nodejs for heroku
-echo "Use vulcan to build Node for Heroku instance..."
-vulcan build -v -o $tempdir/node-${node_version}-heroku.tar.gz
+vulcan build -v \
+  -n node \
+  -c "cd node-v${NODE_VERSION} && ./configure --prefix=/app/vendor/node && make install" \
+  -p /app/vendor/node \
+  -s http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.gz \
+  -o $basedir/../node-${NODE_VERSION}.tgz
 
-popd
-popd
+# upload nodejs to s3
+# $basedir/aws/s3 put $S3_BUCKET \
+#  nodejs-${NODE_VERSION}.tgz $tempdir/node-${NODE_VERSION}.tgz
 
-cp $tempdir/node-${node_version}-heroku.tar.gz .
-echo "+ Binaries available at ./node-${node_version}-heroku.tar.gz"
+# generate manifest
+# $basedir/manifest nodejs
 
-
-echo "+ Upload this package to Amazon S3."
