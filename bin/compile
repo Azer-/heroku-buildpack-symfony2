@@ -438,7 +438,9 @@ rm -rf app/cache/*
 php app/console assets:install -e prod
 php app/console cache:clear -e prod
 
+echo "Launching Web Server"
 /app/${PHP_PATH}/sbin/php-fpm
+/app/vendor/nginx/sbin/nginx -t 
 /app/vendor/nginx/sbin/nginx
 
 EOF
