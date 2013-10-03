@@ -41,7 +41,7 @@ vulcan build -v \
   -c "cd node-v${NODE_VERSION} && ./configure --prefix=/app/vendor/node && make install" \
   -p /app/vendor/node \
   -s http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.gz \
-  -o $basedir/../node-${NODE_VERSION}.tgz
+  -o $basedir/../node-${NODE_VERSION}-heroku.tgz
 
 # upload nodejs to s3
 # $basedir/aws/s3 put $S3_BUCKET \
