@@ -333,8 +333,13 @@ popd > /dev/null
     cp $LP_DIR/conf/etc.d/* /app/vendor/php/etc.d
     
     if [ -n "${BLITZ_API_KEY}" ]; then
-    echo "-----> Dumping blitz api key"
-    echo 42 > ${BUILD_DIR}/web/${BLITZ_API_KEY}
+        echo "-----> Dumping blitz api key"
+        echo 42 > ${BUILD_DIR}/web/${BLITZ_API_KEY}
+    fi
+
+    if [ -n "${LOADERIO_TOKEN}" ]; then
+        echo "-----> Dumping loader.io api key"
+        echo loaderio-${LOADERIO_TOKEN} > ${BUILD_DIR}/web/loaderio-${LOADERIO_TOKEN}.txt
     fi
 
 echo "-----> Installing boot script"
